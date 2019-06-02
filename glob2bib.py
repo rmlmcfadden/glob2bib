@@ -60,7 +60,7 @@ def get_keys(aux_file, biblatex=False):
                keys.append(l)
       
          # BibTeX backend
-         if biblatex == True and bibtex_citation in line and line != bibtex_empty_citation:
+         if biblatex == False and bibtex_citation in line and line != bibtex_empty_citation:
             # strip away the strings around the key
             l = line.replace(bibtex_citation, '')
             l = l.replace('}', '')

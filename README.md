@@ -32,3 +32,18 @@ A full discription of all input options can be obtained using:
 ```
 glob2bib --help
 ```
+
+# Caveats
+
+It is assumed that each `.bib` entry is of the form:
+```
+@article{key,
+   author = "...",
+   title = "...",
+   ...
+   doi = "...",
+   url = "..."
+}
+
+```
+where the most crucial feature is the ending, which consists solely of a `}` on the line trailing the entry data. As is, `glob2bib` will fail to parse `.bib` entries that do not comply with this formatting.

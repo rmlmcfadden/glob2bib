@@ -254,18 +254,23 @@ if __name__ == "__main__":
         "aux_file", help="auxillary file (.aux) from LaTeX compilation", type=str
     )
     parser.add_argument(
-        "bib_dir", help="directory to recursively glob for *.bib files", type=str
+        "bib_dir", help="directory to recursively glob for .bib files", type=str
     )
 
     # optional arguments
     parser.add_argument("-v", "--version", action="version", version="%(prog)s v0.1")
-    parser.add_argument("-o", "--output", help="name of output file", type=str)
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="name of the output file to write the extracted .bib entries to",
+        type=str,
+    )
     parser.add_argument(
         "-s",
         "--substitute-unicode",
         default=False,
         action="store_true",
-        help="substitute unicode greek literals to (escaped) greek math TeX commands",
+        help="substitute unicode greek literals with (escaped) greek math TeX commands",
     )
     parser.add_argument(
         "-b",

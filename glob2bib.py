@@ -173,10 +173,9 @@ def replace_greek(text):
     return text
 
 
-# extract a list of .bib entries, whose keys match those in key_list, found in
-# a list of .bib files
-#
+# extract a list of .bib entries, whose keys match those in key_list, found in a list of .bib files
 # inspired by: https://tex.stackexchange.com/a/146660
+#
 # Note: though it is quicker to open each .bib file once and loop through the
 # citation keys, looping over all keys and then checking every file keeps the
 # entries nicely ordered in the output :-).
@@ -229,7 +228,7 @@ def get_entires(key_list, bib_list, substitute_unicode=False):
                             skipped = 1
                         # middle of entry
                         else:
-                            # replace greek unicode literals iff wanted
+                            # replace greek unicode literals if wanted
                             if substitute_unicode == True:
                                 sline = replace_greek(sline)
                             entry += "\t" + sline + "\n"
@@ -285,8 +284,7 @@ if __name__ == "__main__":
     bibs = glob(args.bib_dir + "/**/*.bib", recursive=True)
     bibs.sort()
 
-    # extract all the bibliography entries from the .bib files whose keys match
-    # those in the .aux file
+    # extract all the bibliography entries from the .bib files whose keys match hose in the .aux file
     entries = get_entires(keys, bibs, args.substitute_unicode)
 
     # print the entries to the terminal

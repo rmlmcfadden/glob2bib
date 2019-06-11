@@ -279,6 +279,13 @@ if __name__ == "__main__":
         action="store_true",
         help="assume BibLaTeX/Biber as the bibliography management backend",
     )
+    parser.add_argument(
+        "-l",
+        "--long-journal-titles",
+        default=False,
+        action="store_true",
+        help="substitute journal title abbreviations for their full names",
+    )
 
     args = parser.parse_args()
 
@@ -291,6 +298,58 @@ if __name__ == "__main__":
 
     # extract all the bibliography entries from the .bib files whose keys match hose in the .aux file
     entries = get_entires(keys, bibs, args.substitute_unicode)
+
+    # swap the journal titles
+    if args.long_journal_titles == True:
+        # open the list of names/abbreviations
+        import yaml
+
+        with open("journal_names.yaml", "r") as fh:
+            journal_names = yaml.load(fh, Loader=yaml.SafeLoader)
+
+        # swap them
+        """
+        entries = [
+            entry.replace(name, journal_names["short2long"][name])
+            for entry in entries
+            for name in journal_names["short2long"]
+        ]
+        """
+        new_entries = []
+        # check line-by-line and swap them
+        # loop over all extracted .bib entries
+        for entry in entries:
+
+            new_entry = entry
+
+            # loop over all abbreviated journal names
+            for name in journal_names["short2long"]:
+
+                # case when the braces are used
+                name_braces = "{" + name + "}"
+                if name_braces in entry:
+                    new_entry = entry.replace(
+                        name_braces, "{" + journal_names["short2long"][name] + "}"
+                    )
+
+                # case when quotes are used
+                name_quotes = '"' + name + '"'
+                if name_quotes in entry:
+                    new_entry = entry.replace(
+                        name_quotes, '"' + journal_names["short2long"][name] + '"'
+                    )
+
+            # check if the entry changed!
+            is_same = new_entry == entry
+            """
+            if is_same == False:
+                print("changed!")
+                print(new_entry)
+            """
+            new_entries.append(new_entry)
+
+        # replace the old entries
+        entries = new_entries
 
     # print the entries to the terminal
     if args.output == None:

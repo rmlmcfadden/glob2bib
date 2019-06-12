@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 
-# import json
+import json
 import pandas as pd
 import requests
-import yaml
 
 # get the journal abbreviations list from the ubc library
 url = "https://journal-abbreviations.library.ubc.ca/fulllist.php"
@@ -40,8 +39,5 @@ for long_name, short_name in zip(df["Title"], df["Abbreviation"]):
     ] = "Physical Review E: Statistical, Nonlinear, and Soft Matter Physics"
 
 # write the dictiony to a file
-with open("journal_names.yaml", "w") as fh:
-    # json.dump(journal_names, fh, indent=True)
-    yaml.dump(journal_names, fh, default_flow_style=False)
-
-# print(journal_names["short2long"]["Nat. Prod. Res., Part A"])
+with open("journal_names.json", "w") as fh:
+    json.dump(journal_names, fh, indent=3, separators=(",", ": "))

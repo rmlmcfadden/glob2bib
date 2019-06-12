@@ -239,6 +239,7 @@ def get_entires(key_list, bib_list, substitute_unicode=False):
 # main routine
 from argparse import ArgumentParser
 from glob import glob
+import json
 
 if __name__ == "__main__":
 
@@ -302,27 +303,18 @@ if __name__ == "__main__":
     # swap the journal titles
     if args.long_journal_titles == True:
         # open the list of names/abbreviations
-        import yaml
+        with open("journal_names.json", "r") as fh:
+            journal_names = json.load(fh)
 
-        with open("journal_names.yaml", "r") as fh:
-            journal_names = yaml.load(fh, Loader=yaml.SafeLoader)
-
-        # swap them
-        """
-        entries = [
-            entry.replace(name, journal_names["short2long"][name])
-            for entry in entries
-            for name in journal_names["short2long"]
-        ]
-        """
+        # empty list to hold the potentially modified enties
         new_entries = []
-        # check line-by-line and swap them
+
         # loop over all extracted .bib entries
         for entry in entries:
-
+            # make a copy of the entry
             new_entry = entry
 
-            # loop over all abbreviated journal names
+            # loop over all the abbreviated journal names and do the string substitution
             for name in journal_names["short2long"]:
 
                 # case when the braces are used
@@ -339,16 +331,10 @@ if __name__ == "__main__":
                         name_quotes, '"' + journal_names["short2long"][name] + '"'
                     )
 
-            # check if the entry changed!
-            is_same = new_entry == entry
-            """
-            if is_same == False:
-                print("changed!")
-                print(new_entry)
-            """
+            # add the new entry to the list
             new_entries.append(new_entry)
 
-        # replace the old entries
+        # replace all the the old entries with the updated ones
         entries = new_entries
 
     # print the entries to the terminal

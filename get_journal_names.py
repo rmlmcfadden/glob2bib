@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import json
+from os import environ
 import pandas as pd
 import requests
 
@@ -39,5 +40,5 @@ for long_name, short_name in zip(df["Title"], df["Abbreviation"]):
     ] = "Physical Review E: Statistical, Nonlinear, and Soft Matter Physics"
 
 # write the dictiony to a file
-with open("journal_names.json", "w") as fh:
+with open(environ["HOME"] + "/.journal_names.json", "w") as fh:
     json.dump(journal_names, fh, indent=3, separators=(",", ": "))

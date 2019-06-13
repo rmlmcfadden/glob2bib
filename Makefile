@@ -5,8 +5,9 @@ EXE = glob2bib
 DIR = /usr/local/bin
 
 install:
-	cp $(SRC) $(DIR)/$(EXE)
-	chmod +x $(DIR)/$(EXE)
+	python3 get_journal_names.py
+	sudo cp $(SRC) $(DIR)/$(EXE)
+	sudo chmod +x $(DIR)/$(EXE)
 
 avatar:
 	latexmk -pdf logo.tex
@@ -14,4 +15,4 @@ avatar:
 	convert -quality 100 -density 600 -flatten logo.pdf logo.png
 
 uninstall:
-	rm $(DIR)/$(EXE)
+	sudo rm $(DIR)/$(EXE)

@@ -240,6 +240,7 @@ def get_entires(key_list, bib_list, substitute_unicode=False):
 from argparse import ArgumentParser
 from glob import glob
 import json
+from os import environ
 
 if __name__ == "__main__":
 
@@ -303,7 +304,7 @@ if __name__ == "__main__":
     # swap the journal titles
     if args.long_journal_titles == True:
         # open the list of names/abbreviations
-        with open("journal_names.json", "r") as fh:
+        with open(environ["HOME"] + "/.journal_names.json", "r") as fh:
             journal_names = json.load(fh)
 
         # empty list to hold the potentially modified enties

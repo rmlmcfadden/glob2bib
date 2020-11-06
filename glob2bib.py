@@ -248,7 +248,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(
         prog="glob2bib",
         description="glob2bib: a bibliography generator for BibTeX and BibLaTeX/Biber",
-        epilog="Copyright (c) 2019 Ryan M. L. McFadden",
+        epilog="Copyright (c) 2019-2020 Ryan M. L. McFadden",
     )
 
     # positional arguments
@@ -260,7 +260,7 @@ if __name__ == "__main__":
     )
 
     # optional arguments
-    parser.add_argument("-v", "--version", action="version", version="%(prog)s v0.1")
+    parser.add_argument("-v", "--version", action="version", version="%(prog)s v0.2")
     parser.add_argument(
         "-o",
         "--output",

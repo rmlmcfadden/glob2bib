@@ -260,7 +260,7 @@ if __name__ == "__main__":
     )
 
     # optional arguments
-    parser.add_argument("-v", "--version", action="version", version="%(prog)s v0.2")
+    parser.add_argument("-v", "--version", action="version", version="%(prog)s v0.3")
     parser.add_argument(
         "-o",
         "--output",

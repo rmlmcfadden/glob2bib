@@ -48,7 +48,7 @@ glob2bib --help
 ```
 which will print:
 ```
-usage: glob2bib [-h] [-v] [-o OUTPUT] [-s] [-b] [-l] aux_file bib_dir
+usage: glob2bib [-h] [-v] [-o OUTPUT] [-s] [-b] [-l] [-a] aux_file bib_dir
 
 glob2bib: a bibliography generator for BibTeX and BibLaTeX/Biber
 
@@ -65,7 +65,9 @@ optional arguments:
                         substitute unicode greek literals with (escaped) greek math TeX commands
   -b, --biblatex        assume BibLaTeX/Biber as the bibliography management backend
   -l, --long-journal-titles
-                        substitute journal title abbreviations for their full names
+                        substitute abbreviated journal titles with their full names
+  -a, --abbreviated-journal-titles
+                        substitute full journal titles with their abbreviated names
 
 Copyright (c) 2019-2020 Ryan M. L. McFadden
 ```

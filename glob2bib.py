@@ -286,7 +286,14 @@ if __name__ == "__main__":
         "--long-journal-titles",
         default=False,
         action="store_true",
-        help="substitute journal title abbreviations for their full names",
+        help="substitute abbreviated journal titles with their full names",
+    )
+    parser.add_argument(
+        "-a",
+        "--abbreviated-journal-titles",
+        default=False,
+        action="store_true",
+        help="substitute full journal titles with their abbreviated names",
     )
 
     args = parser.parse_args()
@@ -301,40 +308,61 @@ if __name__ == "__main__":
     # extract all the bibliography entries from the .bib files whose keys match hose in the .aux file
     entries = get_entires(keys, bibs, args.substitute_unicode)
 
-    # swap the journal titles
-    if args.long_journal_titles == True:
+    # fetch the json db of journal titles
+    if args.long_journal_titles == True or args.abbreviated_journal_titles == True:
         # open the list of names/abbreviations
         with open(environ["HOME"] + "/.journal_names.json", "r") as fh:
             journal_names = json.load(fh)
-
         # empty list to hold the potentially modified enties
         new_entries = []
 
+    # swap the short journal titles for long ones
+    if args.long_journal_titles == True:
         # loop over all extracted .bib entries
         for entry in entries:
             # make a copy of the entry
             new_entry = entry
-
             # loop over all the abbreviated journal names and do the string substitution
             for name in journal_names["short2long"]:
-
                 # case when the braces are used
                 name_braces = "{" + name + "}"
                 if name_braces in entry:
                     new_entry = entry.replace(
                         name_braces, "{" + journal_names["short2long"][name] + "}"
                     )
-
                 # case when quotes are used
                 name_quotes = '"' + name + '"'
                 if name_quotes in entry:
                     new_entry = entry.replace(
                         name_quotes, '"' + journal_names["short2long"][name] + '"'
                     )
-
             # add the new entry to the list
             new_entries.append(new_entry)
+        # replace all the the old entries with the updated ones
+        entries = new_entries
 
+    # swap the long journal titles for short ones
+    if args.abbreviated_journal_titles == True:
+        # loop over all extracted .bib entries
+        for entry in entries:
+            # make a copy of the entry
+            new_entry = entry
+            # loop over all the abbreviated journal names and do the string substitution
+            for name in journal_names["long2short"]:
+                # case when the braces are used
+                name_braces = "{" + name + "}"
+                if name_braces in entry:
+                    new_entry = entry.replace(
+                        name_braces, "{" + journal_names["long2short"][name] + "}"
+                    )
+                # case when quotes are used
+                name_quotes = '"' + name + '"'
+                if name_quotes in entry:
+                    new_entry = entry.replace(
+                        name_quotes, '"' + journal_names["long2short"][name] + '"'
+                    )
+            # add the new entry to the list
+            new_entries.append(new_entry)
         # replace all the the old entries with the updated ones
         entries = new_entries
 

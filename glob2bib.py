@@ -368,7 +368,7 @@ if __name__ == "__main__":
         entries = new_entries
 
     # print the entries to the terminal
-    if args.output == None:
+    if args.output is None:
         for entry in entries:
             print(entry, end="")
     # write the entries to a file

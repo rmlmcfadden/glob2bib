@@ -225,7 +225,8 @@ def get_entires(key_list, bib_list, substitute_unicode=False):
                         # skip commented out lines
                         elif sline[0] == "%":
                             # does nothing ;-)
-                            skipped = 1
+                            # skipped = 1
+                            pass
                         # middle of entry
                         else:
                             # replace greek unicode literals if wanted

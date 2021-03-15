@@ -22,17 +22,17 @@ def get_keys(aux_file, biblatex=False):
     keys = []
 
     # citation identifiers
-    bibtex_citation = "\citation{"
-    bibtex_empty_citation = "\citation{}\n"
+    bibtex_citation = r"\citation{"
+    bibtex_empty_citation = r"\citation{}" + "\n"
 
     biblatex_citation = r"\abx@aux@cite{"
     biblatex_empty_citation = r"\abx@aux@cite{}" + "\n"
 
-    revtex41_citation = "\citation{REVTEX41Control}\n"
-    apsrev41_citation = "\citation{apsrev41Control}\n"
+    revtex41_citation = r"\citation{REVTEX41Control}" + "\n"
+    apsrev41_citation = r"\citation{apsrev41Control}" + "\n"
 
-    revtex42_citation = "\citation{REVTEX42Control}\n"
-    apsrev42_citation = "\citation{apsrev42Control}\n"
+    revtex42_citation = r"\citation{REVTEX42Control}" + "\n"
+    apsrev42_citation = r"\citation{apsrev42Control}" + "\n"
 
     revtex = [
         revtex41_citation,

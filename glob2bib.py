@@ -249,7 +249,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(
         prog="glob2bib",
         description="glob2bib: a bibliography generator for BibTeX and BibLaTeX/Biber",
-        epilog="Copyright (c) 2019-2020 Ryan M. L. McFadden",
+        epilog="Copyright (c) 2019-2021 Ryan M. L. McFadden",
     )
 
     # positional arguments

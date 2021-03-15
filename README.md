@@ -69,7 +69,7 @@ optional arguments:
   -a, --abbreviated-journal-titles
                         substitute full journal titles with their abbreviated names
 
-Copyright (c) 2019-2020 Ryan M. L. McFadden
+Copyright (c) 2019-2021 Ryan M. L. McFadden
 ```
 
 ## Caveats

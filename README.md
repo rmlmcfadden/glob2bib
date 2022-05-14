@@ -48,7 +48,7 @@ glob2bib --help
 ```
 which will print:
 ```
-usage: glob2bib [-h] [-v] [-o OUTPUT] [-s] [-b] [-l] [-a] aux_file bib_dir
+usage: glob2bib [-h] [-v] [-o OUTPUT] [-s] [-b] [-l] [-a] [-u] aux_file bib_dir
 
 glob2bib: a bibliography generator for BibTeX and BibLaTeX/Biber
 
@@ -56,7 +56,7 @@ positional arguments:
   aux_file              auxillary file (.aux) from LaTeX compilation
   bib_dir               directory to recursively glob for .bib files
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -v, --version         show program's version number and exit
   -o OUTPUT, --output OUTPUT
@@ -68,8 +68,9 @@ optional arguments:
                         substitute abbreviated journal titles with their full names
   -a, --abbreviated-journal-titles
                         substitute full journal titles with their abbreviated names
+  -u, --url-swap        swap the url field for the doi in each entry
 
-Copyright (c) 2019-2021 Ryan M. L. McFadden
+Copyright (c) 2019-2022 Ryan M. L. McFadden
 ```
 
 ## Caveats

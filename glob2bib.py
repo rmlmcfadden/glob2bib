@@ -1,5 +1,12 @@
 #!/usr/bin/python3
 
+from argparse import ArgumentParser
+from glob import glob
+import json
+from os import environ
+import string
+
+
 """
 glob2bib: a bibliography generator for BibTeX and BibLaTeX/Biber
 
@@ -14,6 +21,8 @@ Features:
 - optionally convert unicode greek literals found in entries to (escaped) greek
 math TeX commands  
 """
+
+__version__ = "0.4.0"
 
 
 # get the list of citation keys from an .aux file
@@ -173,6 +182,63 @@ def replace_greek(text):
     return text
 
 
+def swap_url_for_doi(entry):
+    # intial parsing status
+    has_doi = False
+    has_url = False
+    url_index = -1
+    doi_index = -1
+
+    # split the entry by newlines
+    lines = entry.split("\n")
+
+    for i, line in enumerate(lines):
+        # make the line all lowercase
+        lline = line.lower()
+        # remove all whitespace from the lowercase line
+        sline = lline
+        for ws in string.whitespace:
+            sline = sline.replace(ws, "")
+        # identify the doi entry
+        if "doi=" in sline:
+            has_doi = True
+            doi_index = i
+        # identify the url entry
+        if "url=" in sline:
+            has_url = True
+            url_index = i
+
+    # do nothing if no doi is found
+    if not has_doi:
+        return entry
+
+    # extract the doi and create new url
+    doi = (
+        lines[doi_index]
+        .replace("doi", "")
+        .replace("DOI", "")
+        .replace("=", "")
+        .replace('"', "")
+        .replace("{", "")
+        .replace("}", "")
+        .replace(",", "")
+        .replace(" ", "")
+        .replace("\t", "")
+    )
+    new_url = 'url = "https://doi.org/%s",' % doi
+
+    if has_url:
+        # replace the old url entry
+        lines[url_index] = "\t" + new_url
+    else:
+        # or make a new one
+        lines[-1] = "\t" + new_url
+        lines.append("}")
+
+    # re-join the lines and return the new entry
+    return "\n".join(lines)
+
+
 # extract a list of .bib entries, whose keys match those in key_list, found in a list of .bib files
 # inspired by: https://tex.stackexchange.com/a/146660
 #
@@ -238,30 +304,33 @@ def get_entires(key_list, bib_list, substitute_unicode=False):
 
 
 # main routine
-from argparse import ArgumentParser
-from glob import glob
-import json
-from os import environ
-
-if __name__ == "__main__":
-
+def main():
     # setup and parse command line arguments
     parser = ArgumentParser(
         prog="glob2bib",
         description="glob2bib: a bibliography generator for BibTeX and BibLaTeX/Biber",
-        epilog="Copyright (c) 2019-2021 Ryan M. L. McFadden",
+        epilog="Copyright (c) 2019-2022 Ryan M. L. McFadden",
     )
 
     # positional arguments
     parser.add_argument(
-        "aux_file", help="auxillary file (.aux) from LaTeX compilation", type=str
+        "aux_file",
+        help="auxillary file (.aux) from LaTeX compilation",
+        type=str,
     )
     parser.add_argument(
-        "bib_dir", help="directory to recursively glob for .bib files", type=str
+        "bib_dir",
+        help="directory to recursively glob for .bib files",
+        type=str,
     )
 
     # optional arguments
-    parser.add_argument("-v", "--version", action="version", version="%(prog)s v0.3")
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%s %s" % (parser.prog, __version__),
+    )
     parser.add_argument(
         "-o",
         "--output",
@@ -295,6 +364,13 @@ if __name__ == "__main__":
         default=False,
         action="store_true",
         help="substitute full journal titles with their abbreviated names",
+    )
+    parser.add_argument(
+        "-u",
+        "--url-swap",
+        default=False,
+        action="store_true",
+        help="swap the url field for the doi in each entry",
     )
 
     args = parser.parse_args()
@@ -367,6 +443,10 @@ if __name__ == "__main__":
         # replace all the the old entries with the updated ones
         entries = new_entries
 
+    # optionally swap the urls for dois
+    if args.url_swap:
+        entries = [swap_url_for_doi(entry) for entry in entries]
+
     # print the entries to the terminal
     if args.output is None:
         for entry in entries:
@@ -376,3 +456,7 @@ if __name__ == "__main__":
         with open(args.output, "w") as fh:
             for entry in entries:
                 fh.write(entry)
+
+
+if __name__ == "__main__":
+    main()

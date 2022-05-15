@@ -22,7 +22,7 @@ Features:
 math TeX commands  
 """
 
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 
 
 # get the list of citation keys from an .aux file
@@ -191,6 +191,8 @@ def swap_url_for_doi(entry):
 
     # split the entry by newlines
     lines = entry.split("\n")
+    # remove any empty strings (needed b/c of newlines added during initial entry parsing)
+    lines = list(filter(None, lines))
 
     for i, line in enumerate(lines):
         # make the line all lowercase
@@ -235,8 +237,13 @@ def swap_url_for_doi(entry):
         lines[-1] = "\t" + new_url
         lines.append("}")
 
+    # ensure that every line ends with a comma (except for the very last one)
+    for i, line in enumerate(lines[:-1]):
+        if not line.endswith(","):
+            lines[i] = line + ","
+
     # re-join the lines and return the new entry
-    return "\n".join(lines)
+    return "\n".join(lines) + "\n\n"
 
 
 # extract a list of .bib entries, whose keys match those in key_list, found in a list of .bib files

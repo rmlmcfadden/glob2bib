@@ -22,7 +22,7 @@ Features:
 math TeX commands  
 """
 
-__version__ = "0.4.1"
+__version__ = "0.4.2"
 
 
 # get the list of citation keys from an .aux file

@@ -66,6 +66,7 @@ def get_keys(aux_file, biblatex=False):
             ):
                 # strip away the strings around the key
                 l = line.replace(biblatex_citation, "")
+                l = l.split(r"}{")[-1]
                 l = l.replace("}", "")
                 l = l.replace("\n", "")
                 # check for multiple keys...
